@@ -1,0 +1,14 @@
+data/
+figures/
+renders/
+*.tif
+*.tiff
+*.vrt
+*.png
+*.blend1
+__pycache__/
+.Rhistory
+.RData
+.Rproj.user/
+docs/
+.claude/

@@ -1,0 +1,2 @@
+﻿crs;res_m;xmin;ymin;xmax;ymax;ncol;nrow;block_px;overlap_px;nblock_x;nblock_y;z_min_m;z_max_m
+EPSG:5880;30;2744310;6213480;7167990;10637160;147456;147456;8192;1024;18;18;0;7000
