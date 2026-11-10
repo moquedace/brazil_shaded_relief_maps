@@ -7,7 +7,8 @@
 #
 # 1. data/final/site -> ramo gh-pages de moquedace/brazil_shaded_relief_maps,
 #    num commit unico refeito a cada publicacao (push forcado), para o
-#    historico nao acumular as versoes dos tiles do zoom
+#    historico nao acumular as versoes dos tiles do zoom; o git do site fica
+#    em data/intermediate/12_site/gh_pages.git e so o que mudou e enviado
 # 2. PDFs A0 originais (5 pranchas do 10 + A0 conjunto do 11; 60-120 MB, acima
 #    do limite de 100 MB do git) como arquivos da release <Tag>: cria a
 #    release ou substitui os arquivos (--clobber)
@@ -28,16 +29,24 @@ function Check($what) {
 if (-not (Test-Path (Join-Path $site "index.html"))) { Write-Host "falta o site: rode o 12 antes"; exit 1 }
 
 # 1. site no ramo gh-pages ---------------------------------------------------
-$gitdir = Join-Path $env:TEMP "brazil_site_publish.git"
-if (Test-Path $gitdir) { Remove-Item -Recurse -Force $gitdir }
+# repositorio git so do site, guardado entre publicacoes (data/ fica fora do
+# git do projeto): o push manda so os arquivos que mudaram. Cada publicacao
+# e um commit novo sem pai (commit-tree) com push forcado, para o historico
+# do gh-pages nao acumular versoes do zoom. Antes (10/11/2026) o repositorio
+# era temporario e cada correcao reenviava os 0,8 GB do site
+$gitdir = Join-Path $proj "data\intermediate\12_site\gh_pages.git"
 $g = @("--git-dir=$gitdir", "--work-tree=$site")
-git @g init -q -b gh-pages; Check "git init"
-git @g config core.autocrlf false
+if (-not (Test-Path $gitdir)) {
+    git @g init -q -b gh-pages; Check "git init"
+    git @g config core.autocrlf false
+    git @g remote add origin "https://github.com/$repo.git"; Check "git remote"
+}
 git @g add -A; Check "git add"
-git @g commit -q -m "site: serie Brasil $(Get-Date -Format yyyy-MM-dd)"; Check "git commit"
-Write-Host "enviando o site para gh-pages ..."
-git @g push -f "https://github.com/$repo.git" gh-pages; Check "git push"
-Remove-Item -Recurse -Force $gitdir
+$tree = git @g write-tree; Check "git write-tree"
+$commit = git @g commit-tree $tree -m "site: serie Brasil $(Get-Date -Format yyyy-MM-dd)"; Check "git commit-tree"
+Write-Host "enviando o site para gh-pages ($commit) ..."
+git @g push -f origin "${commit}:refs/heads/gh-pages"; Check "git push"
+git @g update-ref refs/heads/gh-pages $commit
 
 # 2. release com os PDFs originais ------------------------------------------
 if (-not $SiteOnly) {

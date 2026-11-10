@@ -26,6 +26,15 @@
 # como arquivos da release do GitHub (scripts/tools/publish_site.ps1); a
 # pagina aponta para releases/latest/download/<arquivo>
 # opcoes: --skip-zoom  --overwrite-zoom  --workers 12
+#
+# 10/11/2026, depois de publicado (log 25): no celular o endereco longo do
+# "Como citar" nao quebrava, passava da caixa e alargava a pagina (436 px
+# numa tela de 375); as colunas de fontes tinham minimo de 340 px; a tabela
+# de downloads rolava de lado com os botoes cortados; o zoom ocupava 76% da
+# altura e prendia a rolagem. Corrigido: quebra de texto longo, colunas com
+# min(100%, 340 px), tabela em cartoes abaixo de 760 px, zoom com 62% da
+# altura no celular e largura/altura declaradas nas imagens (o conteudo
+# pulava enquanto as imagens carregavam e o menu errava a rolagem)
 
 import argparse
 import html
@@ -224,12 +233,30 @@ th,td{border-bottom:1px solid var(--rule);padding:12px 8px;text-align:left;verti
 th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
 td a{padding:6px 11px;font-size:14px;display:inline-block;margin:2px 4px 2px 0}
 td img{width:64px;height:auto;display:block;border:1px solid var(--rule)}
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:40px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:40px}
 .refs{display:block}.refs li{display:block;font-size:16px;line-height:1.55;color:var(--muted);margin:0 0 10px;padding-left:1.4em;text-indent:-1.4em}
 .refs li a,a.plain,.cite a{border:0;padding:0;text-decoration:underline}.refs li a:hover,a.plain:hover,.cite a:hover{background:none;color:var(--ink)}
 .cite{font-size:16px;background:rgba(255,255,255,.35);border:1px solid var(--rule);padding:16px 18px;color:var(--ink)}
 .plate footer small{color:var(--muted)}
+.cite,.end p,.refs li{overflow-wrap:anywhere}
+@media(max-width:760px){
+#viewer{height:62vh;min-height:360px}
+.table-wrap{overflow-x:visible}table{min-width:0}thead{display:none}
+table,tbody,tr,td{display:block}
+tr{display:grid;grid-template-columns:72px minmax(0,1fr);column-gap:14px;padding:16px 0;border-bottom:1px solid var(--rule)}
+td{border:0;padding:2px 0}td:first-child{grid-row:1/span 4}td:not(:first-child){grid-column:2}
+td img{width:72px}
+td[data-label]::before{content:attr(data-label);display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px}
+}
 """
+
+
+def wh(rel):
+    # largura e altura da imagem do site, para o navegador reservar o espaco
+    # antes de carregar (sem isso o conteudo pula e o menu erra a rolagem)
+    from PIL import Image
+    with Image.open(SITE / rel) as im:
+        return f' width="{im.width}" height="{im.height}"'
 
 
 def plate_card(t, b10, b11):
@@ -238,8 +265,9 @@ def plate_card(t, b10, b11):
     orig = PLATES / f"brazil_{t}_a0.pdf"
     return (f'<article id="{t}" class="plate"><header><span class="index">{inf["index"]}</span>'
             f'<h2>{html.escape(inf["title"])}</h2><p>{html.escape(inf["subtitle"])}</p></header>'
-            f'<div class="body"><div class="map"><img src="assets/map_{t}.jpg" loading="lazy" '
-            f'alt="Mapa do Brasil: {html.escape(inf["title"].lower())} sobre relevo sombreado"></div>'
+            f'<div class="body"><div class="map"><img src="assets/map_{t}.jpg"{wh(f"assets/map_{t}.jpg")} loading="lazy" '
+            f'alt="Mapa do Brasil: {html.escape(inf["title"].lower())}'
+            f'{" (cores hipsométricas sobre o relevo sombreado)" if t == "hypsometry" else " sobre relevo sombreado"}"></div>'
             f'<aside>{b11.html_legend(t)}</aside></div>'
             f'<footer><p>{html.escape(" ".join(inf["sources"]))}</p>'
             f'<a href="downloads/brazil_{t}_a0_light.pdf">Prancha A0 · PDF ({mb(light)})</a>'
@@ -254,18 +282,18 @@ def downloads_table(themes, b10):
         inf = b10.THEMES[t]
         d = SITE / "downloads"
         rows.append(
-            f'<tr><td><img src="assets/plate_{t}.jpg" alt="" loading="lazy"></td>'
+            f'<tr><td><img src="assets/plate_{t}.jpg"{wh(f"assets/plate_{t}.jpg")} alt="" loading="lazy"></td>'
             f'<td>{inf["index"]} · {html.escape(inf["title"])}</td>'
-            f'<td><a href="downloads/brazil_{t}_a0_light.pdf">PDF ({mb(d / f"brazil_{t}_a0_light.pdf")})</a></td>'
-            f'<td><a href="{RELEASE_URL}brazil_{t}_a0.pdf">PDF ({mb(PLATES / f"brazil_{t}_a0.pdf")})</a></td>'
-            f'<td><a download href="downloads/brazil_{t}_screen.png">PNG</a>'
+            f'<td data-label="Prancha A0"><a href="downloads/brazil_{t}_a0_light.pdf">PDF ({mb(d / f"brazil_{t}_a0_light.pdf")})</a></td>'
+            f'<td data-label="A0 original (gráfica)"><a href="{RELEASE_URL}brazil_{t}_a0.pdf">PDF ({mb(PLATES / f"brazil_{t}_a0.pdf")})</a></td>'
+            f'<td data-label="Versão de tela"><a download href="downloads/brazil_{t}_screen.png">PNG</a>'
             f'<a href="downloads/brazil_{t}_screen.pdf">PDF</a></td></tr>')
     d = SITE / "downloads"
     rows.append(
-        '<tr><td><img src="assets/three_maps_a0.jpg" alt="" loading="lazy"></td><td>Relevo, geologia e solos · conjunto</td>'
-        f'<td><a href="downloads/brazil_three_maps_a0_light.pdf">PDF A0 deitado ({mb(d / "brazil_three_maps_a0_light.pdf")})</a></td>'
-        f'<td><a href="{RELEASE_URL}brazil_three_maps_a0.pdf">PDF ({mb(MULTI / "brazil_three_maps_a0.pdf")})</a></td>'
-        '<td><a download href="downloads/brazil_three_maps_screen.png">PNG 3840 × 2160</a>'
+        f'<tr><td><img src="assets/three_maps_a0.jpg"{wh("assets/three_maps_a0.jpg")} alt="" loading="lazy"></td><td>Relevo, geologia e solos · conjunto</td>'
+        f'<td data-label="Prancha A0"><a href="downloads/brazil_three_maps_a0_light.pdf">PDF A0 deitado ({mb(d / "brazil_three_maps_a0_light.pdf")})</a></td>'
+        f'<td data-label="A0 original (gráfica)"><a href="{RELEASE_URL}brazil_three_maps_a0.pdf">PDF ({mb(MULTI / "brazil_three_maps_a0.pdf")})</a></td>'
+        '<td data-label="Versão de tela"><a download href="downloads/brazil_three_maps_screen.png">PNG 3840 × 2160</a>'
         '<a href="downloads/brazil_three_maps_screen.pdf">PDF</a></td></tr>')
     return ('<div class="table-wrap"><table><thead><tr><th></th><th>Mapa</th><th>Prancha A0 (tela e impressão comum)</th>'
             '<th>A0 original (gráfica)</th><th>Versão de tela</th></tr></thead><tbody>' + "".join(rows) + '</tbody></table></div>')
@@ -312,8 +340,8 @@ def write_page(themes, b10, b11):
 <section id="plates">{cards}</section>
 <section class="section" id="conjunto"><div class="kicker">Composições conjuntas</div><h2>Três mapas, lado a lado</h2><p>Relevo, geologia e solos no mesmo enquadramento e na mesma escala.</p>
 <div class="links"><a href="downloads/brazil_three_maps_screen.png" download>PNG · 3840 × 2160</a><a href="downloads/brazil_three_maps_screen.pdf">PDF de tela</a><a href="downloads/brazil_three_maps_a0_light.pdf">A0 deitado · PDF ({mb(SITE / "downloads" / "brazil_three_maps_a0_light.pdf")})</a><a href="{RELEASE_URL}brazil_three_maps_a0.pdf">A0 original para gráfica ({mb(MULTI / "brazil_three_maps_a0.pdf")})</a></div>
-<img class="preview" src="assets/three_maps_screen.jpg" loading="lazy" alt="Prancha digital com relevo, geologia e solos lado a lado">
-<h3 style="margin-top:36px">Prancha A0 · 1189 × 841 mm</h3><a style="padding:0;border:0;display:block" href="downloads/brazil_three_maps_a0_light.pdf"><img class="preview" src="assets/three_maps_a0.jpg" loading="lazy" alt="Prévia da prancha A0 conjunta"></a></section>
+<img class="preview" src="assets/three_maps_screen.jpg"{wh("assets/three_maps_screen.jpg")} loading="lazy" alt="Prancha digital com relevo, geologia e solos lado a lado">
+<h3 style="margin-top:36px">Prancha A0 · 1189 × 841 mm</h3><a style="padding:0;border:0;display:block" href="downloads/brazil_three_maps_a0_light.pdf"><img class="preview" src="assets/three_maps_a0.jpg"{wh("assets/three_maps_a0.jpg")} loading="lazy" alt="Prévia da prancha A0 conjunta"></a></section>
 <section class="section" id="explorar"><div class="kicker">Visualizador</div><h2>Explorar com zoom</h2>
 <p>Arraste para mover e use a roda do mouse ou o gesto de pinça para aproximar. O zoom vai até 120 m por pixel; os mapas foram compostos a 30 m, e as pranchas usam essa base reduzida ao tamanho de impressão.</p>
 <div class="themes" id="zoomthemes">{zoom_btn}</div><div id="viewer"></div></section>
