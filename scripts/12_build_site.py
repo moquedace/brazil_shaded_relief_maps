@@ -34,7 +34,12 @@
 # altura e prendia a rolagem. Corrigido: quebra de texto longo, colunas com
 # min(100%, 340 px), tabela em cartoes abaixo de 760 px, zoom com 62% da
 # altura no celular e largura/altura declaradas nas imagens (o conteudo
-# pulava enquanto as imagens carregavam e o menu errava a rolagem)
+# pulava enquanto as imagens carregavam e o menu errava a rolagem). Na mesma
+# noite o Cassio mandou um print das referencias: o CSS do atlas (11) transforma
+# todo <i> dentro de <li> no quadradinho de cor da legenda (caixa com borda,
+# altura fixa), e o recuo negativo da lista entrava nessa caixa e jogava o
+# titulo em italico por cima do ano. O italico das referencias e da citacao
+# voltou a ser texto comum (.refs li i, .cite i)
 
 import argparse
 import html
@@ -235,6 +240,7 @@ td a{padding:6px 11px;font-size:14px;display:inline-block;margin:2px 4px 2px 0}
 td img{width:64px;height:auto;display:block;border:1px solid var(--rule)}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:40px}
 .refs{display:block}.refs li{display:block;font-size:16px;line-height:1.55;color:var(--muted);margin:0 0 10px;padding-left:1.4em;text-indent:-1.4em}
+.refs li i,.cite i{display:inline;flex:none;width:auto;height:auto;border:0;padding:0;text-indent:0;font-style:italic}
 .refs li a,a.plain,.cite a{border:0;padding:0;text-decoration:underline}.refs li a:hover,a.plain:hover,.cite a:hover{background:none;color:var(--ink)}
 .cite{font-size:16px;background:rgba(255,255,255,.35);border:1px solid var(--rule);padding:16px 18px;color:var(--ink)}
 .plate footer small{color:var(--muted)}
