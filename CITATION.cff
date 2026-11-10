@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Se usar este atlas, cite a série cartográfica."
+title: "Brasil: relevo, geologia, solos e diversidade"
+authors:
+  - family-names: Moquedace
+    given-names: Cássio
+    affiliation: "Departamento de Ciência do Solo, ESALQ/USP"
+url: "https://moquedace.github.io/brazil_shaded_relief_maps/"
+repository-code: "https://github.com/moquedace/brazil_shaded_relief_maps"
+license: MIT
+preferred-citation:
+  type: generic
+  title: "Brasil: relevo, geologia, solos e diversidade"
+  authors:
+    - family-names: Moquedace
+      given-names: Cássio
+  year: 2026
+  version: "1.0"
+  url: "https://moquedace.github.io/brazil_shaded_relief_maps/"

@@ -46,6 +46,7 @@ import html
 import importlib.util
 import math
 import os
+import re
 import shutil
 import time
 from concurrent.futures import ProcessPoolExecutor
@@ -63,7 +64,8 @@ TMP = PROJECT / "data" / "intermediate" / "12_site" / "tmp"
 
 SITE_URL = "https://moquedace.github.io/brazil_shaded_relief_maps/"
 REPO_URL = "https://github.com/moquedace/brazil_shaded_relief_maps"
-RELEASE_URL = REPO_URL + "/releases/latest/download/"
+RELEASE_TAG = "v1.0"
+RELEASE_URL = REPO_URL + f"/releases/download/{RELEASE_TAG}/"
 OSD = "https://cdn.jsdelivr.net/npm/openseadragon@4.1.1/build/openseadragon/"
 
 TILE, OVERLAP, WEBP_Q = 510, 1, 80
@@ -189,13 +191,18 @@ def build_zoom(theme, workers, overwrite):
     zdir = SITE / "zoom"
     dzi = zdir / f"{theme}.dzi"
     files = zdir / f"{theme}_files"
-    if dzi.exists() and not overwrite:
+    from atlas_cache import source_signature
+    vrt = OVR / f"brazil_{theme}_balanced_{ZOOM_RES}m.vrt"
+    stamp = TMP / f"{theme}_zoom_signature.txt"
+    signature = source_signature(vrt, settings=(ZOOM_RES,TILE,OVERLAP,WEBP_Q))
+    if dzi.exists() and files.is_dir() and stamp.exists() and stamp.read_text() == signature and not overwrite:
         print(f"  {theme}: ja existe", flush=True)
         return
     t0 = time.time()
+    dzi.unlink(missing_ok=True)
+    stamp.unlink(missing_ok=True)
     shutil.rmtree(files, ignore_errors=True)
     TMP.mkdir(parents=True, exist_ok=True)
-    vrt = OVR / f"brazil_{theme}_balanced_{ZOOM_RES}m.vrt"
     with rasterio.open(vrt) as d:
         w, h = d.width, d.height
         max_l, dims = level_dims(w, h)
@@ -224,6 +231,7 @@ def build_zoom(theme, workers, overwrite):
                    '<Image xmlns="http://schemas.microsoft.com/deepzoom/2008" '
                    f'Format="webp" Overlap="{OVERLAP}" TileSize="{TILE}"><Size Width="{w}" Height="{h}"/></Image>\n',
                    encoding="utf-8")
+    stamp.write_text(signature)
     size = sum(f.stat().st_size for f in files.rglob("*.webp"))
     print(f"  {theme}: {n_tiles} tiles em {max_l + 1} niveis, {size / 1e6:.0f} MB, {time.time() - t0:.0f} s", flush=True)
 
@@ -380,16 +388,23 @@ var items={{}};viewer.world.addHandler('add-item',function(e){{var u=e.item.sour
 document.querySelectorAll('#zoomthemes button').forEach(function(b){{b.addEventListener('click',function(){{var k=+b.dataset.k;THEMES.forEach(function(t,i){{if(items[t])items[t].setOpacity(i===k?1:0)}});
   document.querySelectorAll('#zoomthemes button').forEach(function(x){{x.classList.toggle('active',x===b)}})}})}});
 </script></body></html>"""
-    (SITE / "index.html").write_text(page, encoding="utf-8")
+    from site_experience import enhance
+    (SITE / "index.html").write_text(enhance(page, RELEASE_TAG), encoding="utf-8", newline="\n")
     (SITE / ".nojekyll").write_text("", encoding="utf-8")
 
 
 def main():
+    global RELEASE_TAG, RELEASE_URL
     ap = argparse.ArgumentParser(prog="12_build_site.py")
     ap.add_argument("--skip-zoom", action="store_true")
     ap.add_argument("--overwrite-zoom", action="store_true")
     ap.add_argument("--workers", type=int, default=12)
+    ap.add_argument("--release-tag", default=RELEASE_TAG, help="tag dos PDFs A0 originais")
     args = ap.parse_args()
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", args.release_tag):
+        ap.error("--release-tag inválida")
+    RELEASE_TAG = args.release_tag
+    RELEASE_URL = REPO_URL + f"/releases/download/{RELEASE_TAG}/"
     t0 = time.time()
     b11 = load("atlas11", PROJECT / "scripts" / "11_atlas_multiformat.py")
     b10 = b11.base

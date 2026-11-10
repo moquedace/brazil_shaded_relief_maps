@@ -89,7 +89,8 @@ def ensure_assets():
         with Image.open(file) as im:
             for target,tag in [(4241,'print'),(2320,'digital')]:
                 dst=A/f'map_{theme}_{tag}.png'
-                if not dst.exists():im.resize((target,round(im.height*target/im.width)),Image.Resampling.LANCZOS).save(dst,compress_level=4)
+                if not dst.exists() or dst.stat().st_mtime_ns<file.stat().st_mtime_ns:
+                    im.resize((target,round(im.height*target/im.width)),Image.Resampling.LANCZOS).save(dst,compress_level=4)
         print('mapa pronto',theme,flush=True)
 
 def map_image(pg,theme,x,y,w,h,quality='digital'):

@@ -297,10 +297,17 @@ def map_asset(theme,dpi,m09,m08,frac,maxpx):
     # imagem do mapa (09.map_image) em cache: 300 dpi serve ao 10 e ao 11
     factor=32 if dpi<200 else 8
     mapfile=CACHE/f'{theme}_map_{dpi}.png';metafile=CACHE/f'{theme}_map_{dpi}.json'
-    if not (mapfile.exists() and metafile.exists()):
+    from atlas_cache import source_signature
+    vrt=m09.DIR_30M/f'brazil_{theme}_{m09.PRES}_30m.vrt'
+    paths=[vrt]
+    if theme in m08.CLASS_SRC:
+        paths.append(m09.DIR_03/'tables'/f'{m08.CLASS_SRC[theme][0]}_classes.csv')
+    signature=source_signature(*paths,settings=(dpi,factor,maxpx))
+    metadata=json.loads(metafile.read_text()) if metafile.exists() else {}
+    if not mapfile.exists() or metadata.get('source_signature')!=signature:
         mp,m_px,origin,fb=m09.map_image(theme,frac,m08,factor,maxpx,maxpx)
         mp.save(mapfile,compress_level=4)
-        metafile.write_text(json.dumps(dict(size=mp.size,m_px=m_px,origin=origin,source_overview_m=factor*30),indent=2))
+        metafile.write_text(json.dumps(dict(size=mp.size,m_px=m_px,origin=origin,source_overview_m=factor*30,source_signature=signature),indent=2))
         del mp,fb
     return mapfile,json.loads(metafile.read_text())
 
