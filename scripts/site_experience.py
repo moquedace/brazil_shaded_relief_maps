@@ -9,12 +9,27 @@ CSS = '''
 .site-head{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid var(--rule);padding-bottom:14px}.site-head nav{margin:0;gap:16px}.site-head a,.theme-strip a{border:0;padding:8px 0}.site-head strong{font-size:14px;letter-spacing:.13em}.site-head a:hover,.theme-strip a:hover{background:none;color:var(--ink);text-decoration:underline}
 .hero{display:grid;grid-template-columns:1fr 1.17fr;gap:clamp(15px,4vw,72px);align-items:center;padding:26px 0}.hero h1{font-size:clamp(48px,5.7vw,90px);letter-spacing:-.035em;margin:14px 0 24px}.hero p{max-width:36ch}.hero img{display:block;width:100%;height:auto;max-height:700px;object-fit:contain}.primary{background:#31574b;color:white;border-color:#31574b}.hero-credit{font-size:14px;letter-spacing:.07em}.theme-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:0 0 48px}.theme-strip a{display:flex;align-items:center;gap:10px;padding:10px 4px;font-size:15px;line-height:1.25}.theme-strip img{width:clamp(32px,5vw,78px);height:auto}.theme-strip span{display:block;color:var(--muted);font-size:12px}.section h2,.plate h2{overflow-wrap:anywhere}.plate h2{font-size:clamp(36px,5vw,60px)}
 .compare-controls{display:flex;gap:14px;flex-wrap:wrap;margin:20px 0}.compare-controls label{flex:1 1 225px;font-size:15px}.compare-controls select{display:block;width:100%;max-width:100%;background:var(--paper);border:1px solid var(--rule);color:var(--ink);font:inherit;padding:11px}.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.pair figure{margin:0}.pair img{display:block;width:100%;height:auto}.pair figcaption{font-size:18px;margin:10px 0}.pair details{font-size:16px}.pair summary,.viewer-legend summary{cursor:pointer;font-weight:600;padding:12px 0}.pair li,.viewer-legend li{font-size:16px}.pair-tabs{display:none}.diversity-note{font-size:16px;max-width:70ch}
-#viewer{position:relative}.zoom-frame{position:relative}.zoom-fallback{display:block;width:100%;height:100%;object-fit:contain}.zoom-frame[data-ready=true] .zoom-fallback{display:none}.zoom-frame[data-ready=false] #viewer{display:none}.zoom-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.zoom-toolbar button{font-size:15px}.viewer-legend{padding:0 18px;border:1px solid var(--rule);margin:14px 0}.viewer-legend .legend-body{padding:12px 0}.viewer-legend .ramp{max-width:540px}.viewer-legend .ticks{max-width:540px}#zoom-status{min-height:1.5em;font-size:15px}.themes button[aria-pressed=true],.pair-tabs button[aria-pressed=true]{background:#31574b;color:white}:focus-visible{outline:3px solid #517e71;outline-offset:3px}
-@media(max-width:760px){.site-head{align-items:flex-start}.site-head nav{gap:7px 12px;justify-content:flex-end}.site-head a{flex:none;font-size:13px}.hero{grid-template-columns:1fr;gap:5px;padding:24px 0}.hero h1{font-size:clamp(38px,9vw,62px);margin:8px 0 14px}.hero .links{margin:17px 0}.hero img{max-height:55vh}.theme-strip{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:25px;gap:3px 9px}.theme-strip img{width:42px}.theme-strip a{font-size:14px}.pair{display:block}.pair-tabs{display:flex;gap:8px;margin:12px 0}.pair figure[data-mobile-hidden=true]{display:none}.compare-controls{gap:9px}.compare-controls label{flex-basis:145px}.zoom-toolbar button,.themes button{padding:8px 12px}.viewer-legend{padding:0 12px}}
-.zoom-frame[data-ready=false] #viewer{display:block;position:absolute;inset:0;visibility:hidden;pointer-events:none}
+.zoom-frame{position:relative;height:76vh;min-height:420px;background:var(--paper);border:1px solid var(--rule)}.zoom-frame #viewer{position:absolute;inset:0;width:auto;height:auto;min-height:0;border:0}.zoom-fallback{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain}.zoom-frame[data-ready=true] .zoom-fallback{display:none}.zoom-frame[data-ready=false] #viewer{visibility:hidden;pointer-events:none}.zoom-hint{position:absolute;left:50%;bottom:16px;z-index:3;transform:translateX(-50%);max-width:calc(100% - 32px);padding:7px 12px;background:rgba(39,48,43,.88);color:#fff;font-size:14px;line-height:1.35;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s}.zoom-hint.show{opacity:1}.zoom-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.zoom-toolbar button{font-size:15px}.viewer-legend{padding:0 18px;border:1px solid var(--rule);margin:14px 0}.viewer-legend .legend-body{padding:12px 0}.viewer-legend .ramp{max-width:540px}.viewer-legend .ticks{max-width:540px}#zoom-status{min-height:1.5em;font-size:15px}.themes button[aria-pressed=true],.pair-tabs button[aria-pressed=true]{background:#31574b;color:white}:focus-visible{outline:3px solid #517e71;outline-offset:3px}
+@media(max-width:760px){.site-head{align-items:flex-start}.site-head nav{gap:7px 12px;justify-content:flex-end}.site-head a{flex:none;font-size:13px}.hero{grid-template-columns:1fr;gap:5px;padding:24px 0}.hero h1{font-size:clamp(38px,9vw,62px);margin:8px 0 14px}.hero .links{margin:17px 0}.hero img{max-height:55vh}.theme-strip{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:25px;gap:3px 9px}.theme-strip img{width:42px}.theme-strip a{font-size:14px}.pair{display:block}.pair-tabs{display:flex;gap:8px;margin:12px 0}.pair figure[data-mobile-hidden=true]{display:none}.compare-controls{gap:9px}.compare-controls label{flex-basis:145px}.zoom-toolbar button,.themes button{padding:8px 12px}.viewer-legend{padding:0 12px}.zoom-frame{height:62vh;min-height:360px}}
+.zoom-stage.is-full{position:fixed;inset:0;z-index:1000;display:grid;grid-template-columns:minmax(0,1fr) min(320px,28vw);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"themes legend" "tools legend" "status legend" "map legend";column-gap:18px;margin:0;padding:10px clamp(10px,2vw,24px) 12px;background:var(--paper);overflow:hidden}.zoom-stage.is-full .themes{grid-area:themes;margin:0 0 8px}.zoom-stage.is-full .zoom-toolbar{grid-area:tools;margin:0 0 8px}.zoom-stage.is-full #zoom-status{grid-area:status;margin:0;min-height:0}.zoom-stage.is-full .zoom-frame{grid-area:map;height:auto;min-height:0}.zoom-stage.is-full .viewer-legend{grid-area:legend;min-height:0;margin:0;overflow:auto}html.zoom-locked,html.zoom-locked body{overflow:hidden}
+@media(max-width:760px){.zoom-stage.is-full{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr) auto;grid-template-areas:"themes" "tools" "status" "map" "legend"}.zoom-stage.is-full .themes{flex-wrap:nowrap;overflow-x:auto;margin:0 0 6px;padding-bottom:2px}.zoom-stage.is-full .themes button{flex:none}.zoom-stage.is-full .zoom-toolbar{margin:0 0 6px}.zoom-stage.is-full .viewer-legend{max-height:40vh;margin:8px 0 0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 '''
 
+# visualizador, corrigido em 18/11/2026 (log 27):
+# - o OpenSeadragon 4.1.1 cancela o evento da roda mesmo com scrollToZoom
+#   desligado: sobre o mapa a roda nao aproximava nem rolava a pagina. A roda
+#   agora nao chega ao OSD; sozinha rola a pagina (com aviso no mapa), com
+#   Ctrl/Cmd (ou pinca no touchpad) aproxima, e na tela cheia aproxima direto
+# - o OSD chama canvas.focus() a cada clique ou toque e a pagina pulava
+#   ~200 px para o mapa caber na tela: o focus passa a usar preventScroll
+# - a tela cheia do OSD tira da pagina tudo que esta fora do mapa: sumiam os
+#   botoes (sem + e -, e no iPhone sem como sair). Agora vai para a tela cheia
+#   o bloco inteiro (temas, botoes, mapa e legenda), com recurso em CSS onde
+#   o navegador nao tem tela cheia
+# - a troca de tema espera os tiles do tema novo (o fundo piscava em branco)
+# - o quadro tem altura fixa: a previa estatica ocupava ~1160 px e encolhia
+#   para a altura do mapa quando o zoom ficava pronto
 JS = r'''
 const keys = Object.keys(atlasThemes);
 const imagePath = t => 'assets/map_' + t + '.jpg';
@@ -43,11 +58,18 @@ document.querySelectorAll('a[href="#comparar"]').forEach(a=>a.addEventListener('
 if(location.hash==='#comparar')prepareComparison();
 if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){prepareComparison();io.disconnect()}},{rootMargin:'250px'});io.observe(comparison)}else prepareComparison();
 
-let viewer, currentItem, current='hypsometry', desired=current, sequence=0;
+let viewer, currentItem, current='hypsometry', desired=current, sequence=0, refit=false, pseudoFull=false, hintTimer;
 const status=document.getElementById('zoom-status');
-const frame=document.querySelector('.zoom-frame');
-const fallback=frame.querySelector('img');
+const stage=document.querySelector('.zoom-stage');
+const frame=stage.querySelector('.zoom-frame');
+const fallback=frame.querySelector('.zoom-fallback');
+const viewerEl=document.getElementById('viewer');
+const hint=frame.querySelector('.zoom-hint');
+const fullButton=stage.querySelector('[data-zoom="full"]');
+const legendBox=stage.querySelector('.viewer-legend');
+let legendOpen=legendBox.open;
 const themeButtons=[...document.querySelectorAll('#zoomthemes button')];
+hint.textContent='Use '+(/Mac|iPhone|iPad|iPod/.test(navigator.platform)?'⌘':'Ctrl')+' + roda do mouse para aproximar o mapa';
 function showTheme(t){
   current=t;
   themeButtons.forEach((b,i)=>{b.classList.remove('active');b.setAttribute('aria-pressed',String(keys[i]===t))});
@@ -61,15 +83,24 @@ function openTheme(t){
   const id=++sequence;
   if(currentItem && t===current){status.textContent='';return}
   status.textContent='Carregando '+atlasThemes[t]+'…';
-  viewer.addTiledImage({tileSource:'zoom/'+t+'.dzi',opacity:0,
+  viewer.addTiledImage({tileSource:'zoom/'+t+'.dzi',opacity:0,preload:true,
     success(e){
-      if(id!==sequence){viewer.world.removeItem(e.item);return}
-      const old=currentItem;
-      if(old)e.item.setWidth(old.getBounds().width,true);
-      e.item.setOpacity(1);currentItem=e.item;
-      if(old)viewer.world.removeItem(old);
-      else {frame.dataset.ready='true';viewer.viewport.goHome(true)}
-      showTheme(t);status.textContent='';
+      const item=e.item;
+      if(id!==sequence){viewer.world.removeItem(item);return}
+      if(!currentItem){
+        item.setOpacity(1);currentItem=item;frame.dataset.ready='true';viewer.viewport.goHome(true);
+        showTheme(t);status.textContent='';return}
+      item.setWidth(currentItem.getBounds().width,true);
+      let swapped=false;
+      const swap=()=>{
+        if(swapped)return;swapped=true;
+        if(id!==sequence){if(item!==currentItem)viewer.world.removeItem(item);return}
+        const old=currentItem;item.setOpacity(1);currentItem=item;viewer.world.removeItem(old);
+        showTheme(t);status.textContent='';
+      };
+      const loaded=ev=>{if(ev.fullyLoaded){item.removeHandler('fully-loaded-change',loaded);swap()}};
+      if(item.getFullyLoaded())swap();
+      else{item.addHandler('fully-loaded-change',loaded);setTimeout(swap,6000)}
     },error(){if(id===sequence)status.textContent='Não foi possível carregar o zoom deste tema. Tente novamente ou consulte a prancha.'}
   });
 }
@@ -79,17 +110,58 @@ function startZoom(){
   if(viewer || !window.OpenSeadragon)return;
   OpenSeadragon.setImageFormatsSupported({webp:true});
   viewer=OpenSeadragon({id:'viewer',showNavigationControl:false,showNavigator:true,
-    navigatorPosition:'BOTTOM_RIGHT',maxZoomPixelRatio:2,visibilityRatio:1,
-    constrainDuringPan:true,gestureSettingsMouse:{clickToZoom:false,scrollToZoom:false}});
+    navigatorPosition:'BOTTOM_RIGHT',navigatorBackground:'#eeede9',maxZoomPixelRatio:2,visibilityRatio:1,
+    constrainDuringPan:true,gestureSettingsMouse:{clickToZoom:false,dblClickToZoom:true,scrollToZoom:false}});
+  const focusCanvas=viewer.canvas.focus.bind(viewer.canvas);
+  viewer.canvas.focus=()=>focusCanvas({preventScroll:true});
+  viewer.addHandler('after-resize',()=>{if(refit){refit=false;setTimeout(()=>viewer.viewport.goHome(true),0)}});
   openTheme(desired);
 }
+viewerEl.addEventListener('wheel',e=>{
+  e.stopPropagation();
+  if(!(e.ctrlKey||e.metaKey||stage.classList.contains('is-full'))){
+    hint.classList.add('show');clearTimeout(hintTimer);hintTimer=setTimeout(()=>hint.classList.remove('show'),1500);return}
+  e.preventDefault();hint.classList.remove('show');
+  if(!currentItem)return;
+  const px=e.deltaMode===1?e.deltaY*33:e.deltaMode===2?e.deltaY*400:e.deltaY;
+  const box=viewer.container.getBoundingClientRect();
+  const at=viewer.viewport.pointFromPixel(new OpenSeadragon.Point(e.clientX-box.left,e.clientY-box.top),true);
+  viewer.viewport.zoomBy(Math.exp(-Math.max(-40,Math.min(40,px))/100),at);
+  viewer.viewport.applyConstraints();
+},{capture:true,passive:false});
+const fullElement=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function syncFull(){
+  const on=fullElement()===stage||pseudoFull;
+  if(on!==stage.classList.contains('is-full')){
+    if(currentItem)refit=Math.abs(viewer.viewport.getZoom(true)/viewer.viewport.getHomeZoom()-1)<.03;
+    if(on){legendOpen=legendBox.open;if(matchMedia('(max-width:760px)').matches)legendBox.open=false}
+    else legendBox.open=legendOpen;
+  }
+  stage.classList.toggle('is-full',on);
+  document.documentElement.classList.toggle('zoom-locked',pseudoFull);
+  fullButton.textContent=on?'Sair da tela cheia':'Tela cheia';
+  fullButton.setAttribute('aria-pressed',String(on));
+}
+function toggleFull(){
+  if(fullElement()===stage){(document.exitFullscreen||document.webkitExitFullscreen).call(document);return}
+  if(pseudoFull){pseudoFull=false;syncFull();return}
+  const usePseudo=()=>{pseudoFull=true;syncFull()};
+  const ask=stage.requestFullscreen||stage.webkitRequestFullscreen;
+  if(!ask)return usePseudo();
+  try{const p=ask.call(stage);if(p&&p.catch)p.catch(usePseudo)}catch(err){return usePseudo()}
+  setTimeout(()=>{if(fullElement()!==stage&&!pseudoFull)usePseudo()},900);
+}
+document.addEventListener('fullscreenchange',syncFull);
+document.addEventListener('webkitfullscreenchange',syncFull);
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;
+  if(pseudoFull){pseudoFull=false;syncFull()}else if(fullElement()===stage)(document.exitFullscreen||document.webkitExitFullscreen).call(document)});
 window.addEventListener('load',()=>{if(!window.OpenSeadragon)status.textContent='Zoom indisponível. A prévia e as pranchas continuam disponíveis.'});
 if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){startZoom();io.disconnect()}},{rootMargin:'250px'});io.observe(frame)}else startZoom();
-document.querySelectorAll('.zoom-toolbar button').forEach(b=>b.addEventListener('click',()=>{
-  startZoom();if(!currentItem)return;
+stage.querySelectorAll('.zoom-toolbar button').forEach(b=>b.addEventListener('click',()=>{
   const action=b.dataset.zoom;
+  if(action==='full'){toggleFull();startZoom();return}
+  startZoom();if(!currentItem)return;
   if(action==='home')viewer.viewport.goHome();
-  else if(action==='full')viewer.setFullScreen(!viewer.isFullScreen());
   else {viewer.viewport.zoomBy(action==='in'?1.5:1/1.5);viewer.viewport.applyConstraints()}
 }));
 '''
@@ -104,12 +176,17 @@ def enhance(page, release_tag='v1.0'):
     controls=''.join(f'<label>Mapa {i+1}<select>{options.replace(f"value=\"{t}\"",f"value=\"{t}\" selected")}</select></label>' for i,t in enumerate(('soil_diversity','lithology_diversity')))
     figures=''.join('<figure><img width="2320" height="2316" loading="lazy" alt=""><figcaption></figcaption><details><summary>Legenda</summary><div class="legend-body"></div></details></figure>' for _ in range(2))
     compare=f'''<section class="section" id="comparar"><div class="kicker">Comparação</div><h2>Um território, duas leituras</h2><p>Escolha dois temas no mesmo enquadramento. No celular, alterne entre eles sem sair da seção.</p><div class="compare-controls">{controls}</div><div class="pair-tabs" aria-label="Mapa exibido no celular"><button type="button">Mapa 1</button><button type="button">Mapa 2</button></div><div class="pair">{figures}</div><noscript><p>A comparação interativa precisa de JavaScript. Os cinco mapas e suas legendas estão abaixo.</p></noscript></section>'''
-    zoom='''<div class="zoom-toolbar" aria-label="Controles do mapa"><button type="button" data-zoom="in" aria-label="Aproximar">+</button><button type="button" data-zoom="out" aria-label="Afastar">−</button><button type="button" data-zoom="home">Enquadrar Brasil</button><button type="button" data-zoom="full">Tela cheia</button></div><p id="zoom-status" role="status"></p><div class="zoom-frame" data-ready="false"><img class="zoom-fallback" src="assets/map_hypsometry.jpg" loading="lazy" alt="Prévia do relevo do Brasil"><div id="viewer" aria-label="Mapa com zoom"></div></div><details class="viewer-legend" open><summary>Legenda · Relevo</summary><div class="legend-body"></div></details><p class="diversity-note">Nas diversidades, a contagem descreve a unidade de mapeamento. As bases temáticas são de 1:250.000; os 30 m referem-se ao relevo. A pirâmide do visualizador usa imagens de até 120 m por pixel.</p>'''
+    zoom='''<div class="zoom-toolbar" aria-label="Controles do mapa"><button type="button" data-zoom="in" aria-label="Aproximar">+</button><button type="button" data-zoom="out" aria-label="Afastar">−</button><button type="button" data-zoom="home">Enquadrar Brasil</button><button type="button" data-zoom="full" aria-pressed="false">Tela cheia</button></div><p id="zoom-status" role="status"></p><div class="zoom-frame" data-ready="false"><img class="zoom-fallback" src="assets/map_hypsometry.jpg" loading="lazy" alt="Prévia do relevo do Brasil"><div id="viewer" aria-label="Mapa com zoom"></div><div class="zoom-hint" aria-hidden="true"></div></div><details class="viewer-legend" open><summary>Legenda · Relevo</summary><div class="legend-body"></div></details>'''
+    note='<p class="diversity-note">Nas diversidades, a contagem descreve a unidade de mapeamento. As bases temáticas são de 1:250.000; os 30 m referem-se ao relevo. A pirâmide do visualizador usa imagens de até 120 m por pixel.</p>'
     page,n=re.subn(r'<div class="kicker">Série cartográfica · Brasil · .*?(?=<section id="plates">)',lambda _:hero+compare+'\n',page,count=1,flags=re.S)
     if n!=1:raise ValueError('Estrutura de abertura inesperada')
     page=page.replace('</style></head>',CSS+'</style></head>',1)
-    page=page.replace('<div id="viewer"></div></section>',zoom+'</section>',1)
-    page=page.replace('Arraste para mover e use a roda do mouse ou o gesto de pinça para aproximar. O zoom vai até 120 m por pixel; os mapas foram compostos a 30 m, e as pranchas usam essa base reduzida ao tamanho de impressão.','Arraste para mover. Use + e − ou o gesto de pinça para aproximar e afastar. Troque o tema mantendo o enquadramento.')
+    # temas, botoes, mapa e legenda num bloco so: a tela cheia leva o bloco
+    # inteiro e os controles continuam visiveis (log 27)
+    page,n=re.subn(r'(<div class="themes" id="zoomthemes">.*?</div>)<div id="viewer"></div></section>',
+                   lambda m:'<div class="zoom-stage">'+m.group(1)+zoom+'</div>'+note+'</section>',page,count=1,flags=re.S)
+    if n!=1:raise ValueError('Estrutura do visualizador inesperada')
+    page=page.replace('Arraste para mover e use a roda do mouse ou o gesto de pinça para aproximar. O zoom vai até 120 m por pixel; os mapas foram compostos a 30 m, e as pranchas usam essa base reduzida ao tamanho de impressão.','Arraste para mover; aproxime com Ctrl + roda do mouse (⌘ no Mac), duplo clique, + e − ou pinça. A troca de tema mantém o enquadramento.')
     page=page.replace('/releases/latest/download/',f'/releases/download/{release_tag}/')
     page,n=re.subn(r'<script>\s*function view\(j\).*?</script>',lambda _:'<script>\nconst atlasThemes='+json.dumps(THEMES,ensure_ascii=False)+';\n'+JS+'</script>',page,count=1,flags=re.S)
     if n!=1 or page.count('id="viewer"')!=1:raise ValueError('Estrutura do visualizador inesperada')
